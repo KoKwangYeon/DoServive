@@ -1,17 +1,26 @@
     using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterScript : MonoBehaviour
 {
     Animator animator;
     private Rigidbody rigid;
+    GameObject ending;
+    GameObject floor;
 
     static int camera_mode = 0;
     public int point;
+    public int end_check;
     // Start is called before the first frame update
     void Start()
     {
+        end_check = 0;
+        ending = GameObject.Find("EndingCanvas");
+        ending.SetActive(false);
+        floor = GameObject.Find("Floor");
+        floor.SetActive(true);
         point = 0;
         animator = GetComponent<Animator>();
         animator.SetBool("moving",false);
@@ -21,7 +30,16 @@ public class CharacterScript : MonoBehaviour
 
 
     }
-    
+    void game_end_check(){
+        if(this.transform.position.y <= -5f && end_check == 0){
+            floor.SetActive(false);
+            ending.SetActive(true);
+            ending.AddComponent<EndingScript>();
+            GameObject point = GameObject.Find("PointCanvas");
+            point.SetActive(false);
+            end_check = 1;  
+        }
+    }
     void move_2d(){
         if (Input.GetKey(KeyCode.D))
         {
@@ -51,13 +69,11 @@ public class CharacterScript : MonoBehaviour
         {
             animator.SetBool("moving", false);
         }
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
-            print("shift on");
+        if(Input.GetKey(KeyCode.LeftShift)){
             animator.SetBool("running",true);
         }
         if(Input.GetKeyUp(KeyCode.LeftShift)){
             animator.SetBool("running",false);
-            print("shift off");
         }
     }
     void jump_2d()
@@ -118,6 +134,7 @@ public class CharacterScript : MonoBehaviour
             move_3d();
             jump_2d();
         }         
+        game_end_check();
     }
     private void OnCollisionEnter(Collision other) {
         animator.SetBool("midair",false);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreateNewFloorScript : MonoBehaviour
 {
     GameObject floor; 
+    GameObject floor2;
 
     static float time = 4f;
     static float selectCountdown = 0f;
@@ -13,6 +14,14 @@ public class CreateNewFloorScript : MonoBehaviour
     {
         floor = GameObject.Find("Floor");
         //floor.SetActive(false);
+        
+        //floor.renderer.enabled = false;  
+        floor.GetComponent<MeshRenderer>().enabled = false;
+        floor.GetComponent<BoxCollider>().enabled = false;
+        floor2 = transform.GetChild(0).gameObject;
+        floor2.GetComponentInChildren<MeshRenderer>().enabled = false;
+        floor2.GetComponentInChildren<BoxCollider>().enabled = false;
+
         time = 4f;
         selectCountdown = 0f;
     }
@@ -24,6 +33,8 @@ public class CreateNewFloorScript : MonoBehaviour
             floor_clone.SetActive(true);
             floor_clone.GetComponent<CreateNewFloorScript>().enabled = false;
             floor_clone.AddComponent<GoDownFloorScript>();
+            
+
             selectCountdown = time;
         }
         else{
@@ -36,5 +47,7 @@ public class CreateNewFloorScript : MonoBehaviour
     void Update()
     {
         create_obj();
+        
     }
+
 }

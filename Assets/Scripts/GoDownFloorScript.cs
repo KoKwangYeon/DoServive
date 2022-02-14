@@ -15,23 +15,39 @@ public class GoDownFloorScript : MonoBehaviour
         this.transform.position += new Vector3(Random.Range(-5,5),0,0);
         character = GameObject.Find("Character");
 
+
+        this.GetComponent<MeshRenderer>().enabled = true;
+        this.GetComponent<BoxCollider>().enabled = true;
+
+        GameObject fl2 = this.transform.GetChild(0).gameObject;
+        fl2.GetComponent<MeshRenderer>().enabled = true;
+        fl2.GetComponent<BoxCollider>().enabled = true;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += new Vector3(0,-1,0)*Time.deltaTime;
-        if(this.transform.position.y <= (float)-5){
-            Destroy(gameObject);
-        }
-        if(count_point == 0){
-            if(character.transform.position.y > this.transform.position.y){
-                print("point++");
-                count_point = 1;
-                CharacterScript cc = GameObject.Find("Character").GetComponent<CharacterScript>();
-                cc.point++;
+        CharacterScript cc = GameObject.Find("Character").GetComponent<CharacterScript>();
+        if(cc.end_check == 0){
+            this.transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+            if (this.transform.position.y <= (float)-5)
+            {
+                Destroy(gameObject);
+            }
+            if (count_point == 0)
+            {
+                if (character.transform.position.y > this.transform.position.y)
+                {
+                    count_point = 1;
+                    cc.point++;
+                }
             }
         }
+        else if(cc.end_check == 1){
+            Destroy(gameObject);
+        }
+        
         
     }
 
