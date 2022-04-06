@@ -7,11 +7,13 @@ public class GoDownFloorScript : MonoBehaviour
     GameObject obj;
     private int count_point = 0;
     GameObject character;
+    public float speed = -1;
     GameObject cha;
     // Start is called before the first frame update
     void Start()
     {
         count_point = 0;
+        speed = -1;
         this.transform.position += new Vector3(Random.Range(-5,5),0,0);
         character = GameObject.Find("Character");
 
@@ -30,7 +32,9 @@ public class GoDownFloorScript : MonoBehaviour
     {
         CharacterScript cc = GameObject.Find("Character").GetComponent<CharacterScript>();
         if(cc.end_check == 0){
-            this.transform.position += new Vector3(0, -1, 0) * Time.deltaTime;
+            //float speed = -(1.0f + cc.point/10.0f);
+            //print(speed);
+            this.transform.position += new Vector3(0, speed, 0) * Time.deltaTime;
             if (this.transform.position.y <= (float)-5)
             {
                 Destroy(gameObject);

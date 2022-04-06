@@ -12,6 +12,10 @@ public class CharacterScript : MonoBehaviour
 
     static int camera_mode = 0;
     public int point;
+    public float playTime;
+    public CreateNewFloorScript createfloor;
+    public GoDownFloorScript godown;
+    int timecheck;
     public int end_check;
     // Start is called before the first frame update
     void Start()
@@ -21,13 +25,16 @@ public class CharacterScript : MonoBehaviour
         ending.SetActive(false);
         floor = GameObject.Find("Floor");
         floor.SetActive(true);
-        point = 0;
         animator = GetComponent<Animator>();
         animator.SetBool("moving",false);
         rigid = GetComponent<Rigidbody>();
+        createfloor = GetComponent<CreateNewFloorScript>();
+        godown = GetComponent<GoDownFloorScript>();
         camera_mode = 0;
-        
 
+        timecheck = 1;
+        point = 0;
+        playTime = 0;
 
     }
     void game_end_check(){
@@ -126,6 +133,7 @@ public class CharacterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playTime += Time.deltaTime;
         if(camera_mode == 0){
             move_2d();
             jump_2d();
@@ -134,6 +142,19 @@ public class CharacterScript : MonoBehaviour
             move_3d();
             jump_2d();
         }         
+        
+        if(timecheck == Mathf.Round(playTime)){
+            if(timecheck%5 == 0){
+                print(timecheck % 5 + "  timecheck : " + timecheck + "  playTime : " + Mathf.Round(playTime) + "\n");
+                createfloor = GameObject.Find("Floor").GetComponent<CreateNewFloorScript>();
+                createfloor.time -= 0.1f;
+                godown = GameObject.Find("Floor(Clone)").GetComponent<GoDownFloorScript>();
+                godown.speed -= 0.05f;
+                print("floor time : " + createfloor.time + "  godown speed : " + godown.speed + "\n");
+            }
+            timecheck+=1;    
+        }
+
         game_end_check();
     }
     private void OnCollisionEnter(Collision other) {

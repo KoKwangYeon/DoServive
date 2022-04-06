@@ -7,7 +7,7 @@ public class CreateNewFloorScript : MonoBehaviour
     GameObject floor; 
     GameObject floor2;
 
-    static float time = 4f;
+    public float time = 4f;
     static float selectCountdown = 0f;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,6 @@ public class CreateNewFloorScript : MonoBehaviour
         floor2.GetComponentInChildren<MeshRenderer>().enabled = false;
         floor2.GetComponentInChildren<BoxCollider>().enabled = false;
 
-        time = 4f;
         selectCountdown = 0f;
     }
 
